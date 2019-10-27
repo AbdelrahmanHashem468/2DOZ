@@ -8,6 +8,8 @@
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
+<!-- Scripts -->
+<script src="{{ asset('js/app.js') }}" defer></script>
 
         <!-- Styles -->
         <style>
@@ -83,7 +85,7 @@
                 <div class="title m-b-md">
                     Laravel
                 </div>
-
+                
                 <div class="links">
                     <a href="https://laravel.com/docs">Docs</a>
                     <a href="https://laracasts.com">Laracasts</a>

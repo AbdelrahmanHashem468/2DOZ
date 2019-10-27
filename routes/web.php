@@ -12,5 +12,10 @@
 */
 
 Route::get('/', function () {
+    
     return view('welcome');
 });
+
+Auth::routes();
+
+Route::get('/{any}', 'AppController@index')->name('any','.*');
