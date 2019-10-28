@@ -7,6 +7,9 @@ use Validator;
 use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\OauthAccessToken;
+use Illuminate\Support\Facades\Route;
+
+
 
 class UserController extends Controller
 {
@@ -32,45 +35,25 @@ class UserController extends Controller
         return response()->json(['success'=>$success],200);
     }
 
-    /*
-    public function login()
-    {
-        if(Auth::attempt(['email' => request('email'),'password' => request('password')]))
-        {
-            $user = Auth::user();
-            $success['token'] = $user->createToken('myapp')->accessToken;
-            $success['name'] = $user->name;
-            return response()->json(['success'=>$success,'user'=>$user],200); 
-        }
-
-        return response()->json(['error'=>'Unauthorised'],401);
-    
-    }
-*/
-
     public function login(Request $request)
-    {
-        $http = new \GuzzleHttp\Client;
-        try
-        {
-            $response = $http->post('http://127.0.0.1:8000/oauth/token', [
-                'form_params' => [
-                    'grant_type' => 'password',
-                    'client_id' => 2,
-                    'client_secret' => '7BnYc7ohuv8nKJVVy6Hato5i9iltZutiOpxPbc3k',
-                    'username' => $request->email,
-                    'password'=>$request->password,
-                ],
-            ]);
-            return $response->getBody();
-        }
+    {   
+        $request->request->add([
+            'grant_type'=>'password',
+            'client_id'=>2,
+            'client_secret'=>'wj3ZLkm9tbpE7vWAMvnQHhiq4KznRNAeqRcaFnTV',
+            'username'=>$request->email,
+            'password'=>$request->password
 
-        catch(\GuzzleHttp\Exception\BadResponseException $e)
-        {   
-            if($e->getcode()==400)
-                return response()->json('invalid request .enter email and password ',$e->getcode());
-            elseif($e->getcode()==401)
-                return response()->json('your credaintials incorrect .enter email and password ',$e->getcode());
-        }
+        ]);
+        $tokenRequest = Request::create(
+            env('App_URL').'/oauth/token',
+            'post'
+        );
+        $response = Route::dispatch($tokenRequest);
+        return $response;
+        //return app()->handle($tokenRequest);
     }
+
+
+
 }
