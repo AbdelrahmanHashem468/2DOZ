@@ -7,6 +7,9 @@ use Validator;
 use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\OauthAccessToken;
+use Illuminate\Support\Facades\Route;
+
+
 
 class UserController extends Controller
 {
@@ -32,18 +35,23 @@ class UserController extends Controller
         return response()->json(['success'=>$success],200);
     }
 
-    public function login()
-    {
-        if(Auth::attempt(['email' => request('email'),'password' => request('password')]))
-        {
-            $user = Auth::user();
-            $success['token'] = $user->createToken('myapp')->accessToken;
-            $success['name'] = $user->name;
-            return response()->json(['success'=>$success,'user'=>$user],200); 
-        }
+    public function login(Request $request)
+    {   
+        $request->request->add([
+            'grant_type'=>'password',
+            'client_id'=>2,
+            'client_secret'=>'wj3ZLkm9tbpE7vWAMvnQHhiq4KznRNAeqRcaFnTV',
+            'username'=>$request->email,
+            'password'=>$request->password
 
-        return response()->json(['error'=>'Unauthorised'],401);
-    
+        ]);
+        $tokenRequest = Request::create(
+            env('App_URL').'/oauth/token',
+            'post'
+        );
+        $response = Route::dispatch($tokenRequest);
+        return $response;
+        //return app()->handle($tokenRequest);
     }
 
 }
