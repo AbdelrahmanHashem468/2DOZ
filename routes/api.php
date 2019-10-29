@@ -21,4 +21,4 @@ Route::post('register','UserController@register');
 
 Route::post('login','UserController@login');
 
-Route::get('logout','UserController@logout');
+Route::middleware('auth:api')->get('logout','UserController@logout');

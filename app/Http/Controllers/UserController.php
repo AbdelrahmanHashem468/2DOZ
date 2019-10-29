@@ -39,8 +39,8 @@ class UserController extends Controller
     {   
         $request->request->add([
             'grant_type'=>'password',
-            'client_id'=>2,
-            'client_secret'=>'wj3ZLkm9tbpE7vWAMvnQHhiq4KznRNAeqRcaFnTV',
+            'client_id'=>env('CLINT_ID'),
+            'client_secret'=>env('CLINT_SECRET'),
             'username'=>$request->email,
             'password'=>$request->password
 
@@ -51,9 +51,15 @@ class UserController extends Controller
         );
         $response = Route::dispatch($tokenRequest);
         return $response;
-        //return app()->handle($tokenRequest);
     }
 
+    public  function logout(Request $request)
+    {
+        Auth::user()->tokens->each(function($token,$key){
+            $token->delete();
+        
+        });
+    }
 
 
 }
