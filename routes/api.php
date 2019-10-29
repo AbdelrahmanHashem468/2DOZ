@@ -28,6 +28,6 @@ Route::get('index','TodoController@index');
 
 Route::get('show/{id}','TodoController@show');
 
-Route::post('store','TodoController@store');
+Route::middleware('auth:api')->post('store','TodoController@store');
 
 
