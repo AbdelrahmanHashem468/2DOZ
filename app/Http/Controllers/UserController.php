@@ -41,7 +41,7 @@ class UserController extends Controller
             'grant_type'=>'password',
             'client_id'=>env('CLINT_ID'),
             'client_secret'=>env('CLINT_SECRET'),
-            'username'=>$request->email,
+            'username'=>$request->username,
             'password'=>$request->password
 
         ]);
@@ -57,8 +57,8 @@ class UserController extends Controller
     {
         Auth::user()->tokens->each(function($token,$key){
             $token->delete();
-        
         });
+        return response()->json('logout is done',200);
     }
 
 

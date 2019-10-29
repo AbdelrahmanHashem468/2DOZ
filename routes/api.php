@@ -21,4 +21,13 @@ Route::post('register','UserController@register');
 
 Route::post('login','UserController@login');
 
-Route::middleware('auth:api')->get('logout','UserController@logout');
+Route::middleware('auth:api')->post('logout','UserController@logout');
+
+
+Route::get('index','TodoController@index');
+
+Route::get('show/{id}','TodoController@show');
+
+Route::post('store','TodoController@store');
+
+
